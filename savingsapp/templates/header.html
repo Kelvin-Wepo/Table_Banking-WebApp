@@ -9,18 +9,26 @@
                 <div class="top-header-content h-100 d-flex align-items-center justify-content-between">
                     {% if request.get_full_path == "/"  %}
                         <div class="top-headline">
-                            <p style="font-size:3vw"> Welcome to <span>Save As You Earn</span></p>
+                            <p style="font-size:3vw">
+                                <span>Save As You Earn</span>
+                            </p>
                         </div>
 
                         {% if user.is_authenticated %}
                             <div class="login-faq-earn-money">
-                                <p><a href="{% url 'add-cycle' %}">Active Cycle: {{currentCycle}}.</a>
-                                {{request.user.full_name}} <a href="{% url 'logout' %}"> | Logout</a></p>
+                                <p>
+                                <a href="{% url 'add-cycle' %}">Active Cycle: {{currentCycle}}.</a>
+                                {{request.user.full_name}} 
+                                <a href="{% url 'logout' %}">Logout</a>
+                                </p>
                             </div>
                         {% else %}
 
                             <div class="login-faq-earn-money">
-                                <p><a href="{% url 'login' %}">Login </a> | <a href="{% url 'MemberAccountRegister' %}"> Register</a></p>
+                                <p>
+                                    <a href="{% url 'login' %}">Login </a>
+                                    <a href="{% url 'MemberAccountRegister' %}"> Register</a>
+                                </p>
                             </div>
                         {% endif %}
 
@@ -44,7 +52,7 @@
 
 
 <!-- Navbar Area -->
-<div class="cryptos-main-menu" style=" background-color: #ced4da">
+<div class="cryptos-main-menu">
     <div class="classy-nav-container breakpoint-off">
         <div class="container-fluid">
             <!-- Menu -->
@@ -111,9 +119,9 @@
                                 </ul>
                             </li>
                             {% else %}
-                            <li> <a href="{% url 'login' %}" >Please Log in to access more functionalities</a></li>
+                            <li> <a href="{% url 'login' %}" style="padding-left: 400px;">Please Log in to access more functionalities</a></li>
                             {% endif %}
-                           <li><a {% if request.get_full_path == '/Sacco-Account'  %} class="active"{% endif %} href="{% url 'sacco-account' %}">SACCO ACCOUNT</a></li>
+                           <li><a {% if request.get_full_path == '/Sacco-Account'  %} class="active"{% endif %} href="{% url 'sacco-account' %}" style="padding-left: 350px;">SACCO ACCOUNT</a></li>
                         </ul>
 
                     </div>
