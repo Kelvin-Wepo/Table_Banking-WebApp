@@ -87,7 +87,7 @@
                                     <li><a href="{% url 'attendence-history' %}">History</a></li>
                                 </ul>
                             </li>
-                            <li><a {% if request.get_full_path == '/Record-Social-Fund' or request.get_full_path == '/Social-Fund-List' %} class="active"{% endif %} href="#">SOCIAL FUND</a>
+                            <li><a {% if request.get_full_path == '/Record-Social-Fund' or request.get_full_path == '/Social-Fund-List' %} class="active"{% endif %} href="#">WELFARE FUNDS</a>
                                 <ul class="dropdown">
                                     <li><a href="{% url 'record-social-fund' %}">Record</a></li>
                                     <li><a href="{% url 'social-fund-list' %}">List</a></li>
