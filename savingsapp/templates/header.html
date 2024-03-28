@@ -19,7 +19,7 @@
                                 <p>
                                 <a href="{% url 'add-cycle' %}">Active Cycle: {{currentCycle}}.</a>
                                 {{request.user.full_name}} 
-                                <a href="{% url 'logout' %}">Logout</a>
+                                <a href="{% url 'logout' %}" style="padding-left: 100px;">Logout</a>
                                 </p>
                             </div>
                         {% else %}
@@ -119,9 +119,9 @@
                                 </ul>
                             </li>
                             {% else %}
-                            <li> <a href="{% url 'login' %}" style="padding-left: 400px;">Please Log in to access more functionalities</a></li>
+                            <li> <a href="{% url 'login' %}" >Please Log in to access more functionalities</a></li>
                             {% endif %}
-                           <li><a {% if request.get_full_path == '/Sacco-Account'  %} class="active"{% endif %} href="{% url 'sacco-account' %}" style="padding-left: 350px;">SACCO ACCOUNT</a></li>
+                           <li><a {% if request.get_full_path == '/Sacco-Account'  %} class="active"{% endif %} href="{% url 'sacco-account' %}">SACCO ACCOUNT</a></li>
                         </ul>
 
                     </div>

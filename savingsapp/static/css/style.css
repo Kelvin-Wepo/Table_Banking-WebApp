@@ -958,7 +958,7 @@ textarea:focus {
 .main-footer-area {
   background-color: #232323; }
   .main-footer-area .footer-widget .widget-title {
-    margin-bottom: 45px; }
+    margin-bottom: 15px; }
     .main-footer-area .footer-widget .widget-title h6 {
       font-size: 14px;
       font-weight: 500;
@@ -1008,7 +1008,7 @@ textarea:focus {
     .main-footer-area .footer-widget .useful-links li a {
       font-size: 14px;
       font-family: "Open Sans", sans-serif;
-      margin-bottom: 15px;
+      margin-bottom: 0;
       display: block;
       color: #8e8e8e; }
       .main-footer-area .footer-widget .useful-links li a:hover, .main-footer-area .footer-widget .useful-links li a:focus {
@@ -1017,7 +1017,7 @@ textarea:focus {
 .bottom-footer-area {
   background-color: #090f1a;
   text-align: center;
-  height: 60px; }
+  height: 30px; }
   .bottom-footer-area p {
     font-size: 14px;
     margin-bottom: 0;
