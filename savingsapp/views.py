@@ -22,6 +22,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode 
 from django.utils.encoding import force_bytes
+import africastalking
 
 
 class StockList(APIView):
@@ -38,7 +39,7 @@ def MemberAccountRegister(request):
             member.is_active = True  # Activate the user without email verification
             member.save()
             login(request, member)  # Log the user in after registration
-            return redirect('home')  # Redirect to the home page
+            return redirect('index')  # Redirect to the home page
     else:
         form = MembershipAccountForm()
     return render(request, 'membershipaccount.html', {'form': form})
@@ -68,19 +69,34 @@ def add_member(request):
         current_cycle = Cycle.objects.get(is_active=True)
     except ObjectDoesNotExist:
         current_cycle = None  # Handle the case when no active cycle exists
-
-    all_members = Member.objects.filter(is_active=True)
     
+    # Define all_members outside of the conditional block
+    all_members = Member.objects.filter(is_active=True)
+
     if request.method == "POST":
-        fname = request.POST.get('first_name')
-        lname = request.POST.get('last_name')
         form = MemberForm(request.POST, request.FILES)
         if form.is_valid():
-            for i in all_members:
-                if i.first_name == fname and i.last_name == lname:
-                    return HttpResponse('Member With those Names Already Exists')
-            form.save()
+            fname = form.cleaned_data['first_name']
+            lname = form.cleaned_data['last_name']
+            # Check if the member already exists
+            if Member.objects.filter(first_name=fname, last_name=lname).exists():
+                return HttpResponse('Member with those names already exists')
+            
+            # Save the form
+            member = form.save()
             messages.success(request, f'Member has been successfully added to the system')
+
+            # Send SMS to the added member
+            africastalking_username = 'lyzy'
+            africastalking_api_key = '901ca22e382d1a3523a6b729cd7455dd36c52a517c1215bdd0e151a59a6cde21'
+            africastalking.initialize(africastalking_username, africastalking_api_key)
+            sms = africastalking.SMS
+            message = "Welcome to our organization! You have successfully been registered to Mtaani sacco."
+            phone = member.telephone  # Get the phone number of the added member
+            response = sms.send(message, [phone])
+
+            print("SMS response:", response)
+            
             return redirect('add-member')
     else:
         form = MemberForm()
@@ -375,6 +391,25 @@ def give_loan(request):
                 loan = form.save(commit=False)
                 loan.save()
                 messages.success(request, f'Member Loan Application has been recorded')
+                #user=request.user
+                
+                customer_name = form.cleaned_data['name']
+                #profile, created = Member.objects.get_or_create(user=user)
+                # Assuming you have a Loan record with a primary key (pk) of 1
+                loan_instance = Loan.objects.get(name=customer_name)
+
+                customer= loan_instance.name
+                africastalking_username = 'lyzy'
+                africastalking_api_key = '901ca22e382d1a3523a6b729cd7455dd36c52a517c1215bdd0e151a59a6cde21'
+        
+                africastalking.initialize(africastalking_username, africastalking_api_key)
+                sms = africastalking.SMS
+                message = "Payment received."
+                phone=customer.telephone
+                print(phone)
+                response = sms.send(message, [phone])
+             
+                print("SMS response:", response)
                 return redirect('all-loans')
 
         form = LoanForm()
