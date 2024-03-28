@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %} Savings-Home {% endblock title %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+      <h3 style="text-align: center;"> <b style="color: slateblue;">MANAGE THE CYCLES</b></h3>
+      <hr />
+        <div class="row">
+          <div class="col-lg-3 table-bordered" >
+            <h4> Add New Cycle</h4>
+            {% load crispy_forms_tags %}
+              <form method="POST" enctype="multipart/form-data" >
+                {% csrf_token %}
+                <div class="form-group">
+                  <label> Cycle Name</label>
+                  <input type="text" name="cycle_name" placeholder="e.g first cycle" value="" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label> Start Period</label>
+                  <input type="date" name="cycle_period_start" value="date" class="form-control">
+               </div>
+
+                <div class="form-group">
+                  <label> End Period</label>
+                  <input type="date" name="cycle_period_end" value="date" class="form-control">
+               </div>
+              <div class="form-group">
+                <label> Lending Rate </label>
+                <input type="number" name="rate" value="" class="form-control">
+              </div>
+                <div class="form-group">
+                   <button type="submit" class="btn btn-primary" >Submit</button>
+               </div>
+              </form>
+          </div>
+          <div class="col-lg-8" style='border-left: 3px solid royalblue;'>
+            <h4>List of Cycles</h4>
+            <p><b style='color: crimson;'>NB</b> Activating a cycle will update current data</p>
+            <table id="data-table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                <thead>
+                  <tr style="font-weight: bolder;">
+                    <td>Cycle Name</td>
+                    <td>Lending Rate</td>
+                    <td>Cycle Start</td>
+                    <td>Cycle End</td>
+                    <td>Is Active?</td>
+                    <td>Action</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for list in all_cycle %}
+                    <tr>
+                      <td>{{list.cycle_name}}</td>
+                      <td>{{list.rate}}%</td>
+                      <td>{{list.cycle_period_start}}</td>
+                      <td>{{list.cycle_period_end}}</td>
+                      <td>{{list.is_active}}</td>
+
+                      <td> <div class="mb-4">
+                            {% if list.is_active == True %}
+                            <i class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span> Active</i>
+                            <a href="{% url 'edit-cycle' pk=list.id %}"class="btn btn-info btn-sm"><span class="fa fa-edit"> Edit</span></a>
+                            
+                              {% else %}
+                            <a href="{% url 'activate-cycle' list.id %}" class="btn btn-danger btn-sm">
+                              <span class="glyphicon glyphicon-king"></span> Activate</a>
+                            {% endif %}
+                            <!-- <a href="{% url 'delete-cycle' pk=list.id %}"class="btn btn-danger btn-sm"><span class="fa fa-trash"> Delete</span></a> -->
+                            
+                      </div>
+                     </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endblock content %}
+
+    {% block javascripts %}
+        {{ block.super }}
+    {% endblock javascripts %}

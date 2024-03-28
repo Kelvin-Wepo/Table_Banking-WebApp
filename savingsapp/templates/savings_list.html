@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %} Savings-Home {% endblock title %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock stylesheets %}
+{% load humanize %}
+{% block content %}
+        <p style="text-align: center;">
+          <a href="#" class="btn-sm btn-default"> Savings List</a>
+          <a href="{% url 'make-saving' %}"  class="btn-sm btn-info"> Record Savings</a></p>
+            <h3 style="text-align: center;">Saving Scheme for <b style="color:blueviolet">{{current_cycle}}</b> cylcle</h3>
+            <hr />
+            <h5 style="text-align: center;">List of All members Savings</h5>
+
+            <table id="data-table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                <thead>
+                  <tr style="font-weight: bolder;">
+                     <td>Name</td>
+                    <td>Total Savings <b>{{total_amount|intcomma}} </b></td>
+                    <td>Action</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for member in all_members %}
+                  {% if member.total_saving != 0 %}
+                    <tr>
+                      <td>{{member.full_name}}</td>
+                      <td>{{member.total_saving|intcomma}}</td>
+                        
+                      <td>
+                        <div class="mb-4">
+                          <a href="{% url 'view-savings' member.id %}"class="btn-sm btn-info "><span class="fa fa-list"> View Saving Routine</span></a>
+                        </div>
+                     </td>
+                    </tr>
+                   {% endif %} 
+                  {% endfor %}
+                </tbody>
+            </table>
+          </div>
+          <!-- 
+          <div class="modal fade" id="date" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Kisajja Kikulu Savings</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h4 class="text-danger"><b>Saving List Sorted by Date</b></h4>
+                 <form method="POST" action="">
+                   <div class="col-lg-6 form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" class="form-control" id="date" required="*" >
+                    </div>
+                    <div class="row">
+                    <button type="submit" class="btn btn-primary" >Submit</button>
+                    <pre>                                   </pre><button type="button" class="btn btn-danger" data-dismiss="modal">NO</button>
+                    </div>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="range" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Kisajja Kikulu Savings</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h4 class="text-danger"><b>Saving List Sorted by Date Range </b></h4>
+                 <form method="POST" action="">
+                   <div class="row">
+                   <div class="col-lg-6 form-group">
+                        <label for="date"> From Date:</label>
+                        <input type="date" class="form-control" id="from_date" name="from_date" required="*" >
+                    </div>
+                    <div class="col-lg-6 form-group">
+                        <label for="date"> To Date:</label>
+                        <input type="date" class="form-control" id="to_date" name="to_date" required="*" >
+                    </div>
+                    </div>
+                    <div class="row">
+                    <button type="submit" class="btn btn-primary" >Submit</button>
+                    <pre>                                   </pre><button type="button" class="btn btn-danger" data-dismiss="modal">NO</button>
+                    </div>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="month" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Kisajja Kikulu Savings</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h4 class="text-danger"><b>Saving List Sorted by Month</b></h4>
+                     <form method="POST" action="">
+                       <div class="row">
+                           <div class="col-lg-6 form-group">
+                                <label for="year">Year:</label>
+                                <input type="number" placeholder="year e.g. 2020" class="form-control" id="year" name="year"  required="*" >
+                            </div>
+
+                            <div class="col-lg-6 form-group">
+                                <label for="date">Month:</label>
+                                   <select  name="report_month" class="form-control"required="required" style="cursor: pointer">
+                                      <option></option>
+                                      <option class="btn-success" name="1" value="1">January</option>
+                                      <option class="btn-success" name="2" value="2">February</option>
+                                      <option class="btn-success" name="3" value="3">March</option>
+                                      <option class="btn-success" name="4" value="4">April</option>
+                                      <option class="btn-success" name="5" value="5">May</option>
+                                      <option class="btn-success" name="6" value="6">June</option>
+                                      <option class="btn-success" name="7" value="7">July</option>
+                                      <option class="btn-success" name="8" value="8">August</option>
+                                      <option class="btn-success" name="9" value="9">September</option>
+                                      <option class="btn-success" name="10" value="10">October</option>
+                                      <option class="btn-success" name="11" value="11">November</option>
+                                      <option class="btn-success" name="12" value="12">December</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button type="submit" class="btn btn-primary" >Submit</button>
+                            <pre>                                   </pre><button type="button" class="btn btn-danger" data-dismiss="modal">NO</button>
+                        </div>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="years" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Kisajja Kikulu Savings</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h4 class="text-danger"><b>Saving List Sorted by Year</b></h4>
+                 <form method="POST" action="">
+                   <div class="col-lg-6 form-group">
+                        <label for="yearly">Year:</label>
+                        <input type="number" class="form-control" id="yearly" required="*" placeholder="Enter Year e.g. 2020" >
+                    </div>
+                    <div class="row">
+                    <button type="submit" class="btn btn-primary" >Submit</button>
+                    <pre>                                   </pre><button type="button" class="btn btn-danger" data-dismiss="modal">NO</button>
+                    </div>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="cycle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Kisajja Kikulu Savings</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h4 class="text-danger"><b>Saving List Sorted by Cycle</b></h4>
+                 <form method="POST" action="">
+                   <div class="col-lg-6 form-group">
+                        <label for="cycles">Cycle:</label>
+                        <input type="text" class="form-control" id="cycles" name ="cycle" required="*" >
+                    </div>
+                    <div class="row">
+                    <button type="submit" class="btn btn-primary" >Submit</button>
+                    <pre>                                   </pre><button type="button" class="btn btn-danger" data-dismiss="modal">NO</button>
+                    </div>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+    {% endblock content %}
+
+    {% block javascripts %}
+        {{ block.super }}
+    {% endblock javascripts %}

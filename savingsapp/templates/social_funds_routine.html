@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block content %}
+
+<p style="text-align: center;">
+    <a href="{% url 'social-fund-list' %}" class="btn-sm btn-info">Member Contribution</a>
+     {{get_member}} <a href="{% url 'record-social-fund' %}" class="btn-sm btn-info">Record Social Fund</a>
+</p>
+<h3 style="text-align: center;">Social Funds Contributions for the cycle of <b style="color: slateblue;">{{current_cycle}}</b></h3>
+<hr />
+<section class="page-news-details-area">
+    <p style="text-align: center;">All contributions made by <b style="color: red"> {{get_member}}</b></p>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12 col-sm-12 col-12">
+                <div class="page-news-details">
+                    <table id="data-table" class="table table-striped table-bordered dt-responsive nowrap"
+                        cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <td>Date</td>
+                                <td>Social Fund.<b style="color: red">(Total Contributions: Shs.{{total_amount|intcomma}})</b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in get_contributions %}
+                            <tr>
+                                <td>{{data.date}}</td>
+                                <td>{{data.social_fund|intcomma}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-4 offset-lg-0 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-12" style="border: 3px solid slateblue;">
+                <div class="sidebar">
+                    <div class="sidebar-widget">
+                        <h2 class="sidebar-title">All Members</h2>
+                        <ul class="widget-news">
+                            <style type="text/css">
+                                img {
+                                    border-radius: 30%;
+
+                                }
+
+                                .center {
+                                    display: block;
+                                    margin-top: 13px;
+                                    margin-left: auto;
+                                    margin-right: auto;
+                                    width: 70%;
+
+                                }
+                            </style>
+                            <!-- <i>{{ forloop.counter }}</i> -->
+                            {% for details in members_list %}
+                            <li>
+                                <a href="{% url 'social-fund-routine' details.pk %}">
+                                    <span class="content">
+                                        <span class="meta">
+                                            <span class="info"><span class="icon"><i
+                                                        class="fa fa-user"></i></span>{{ details.full_name }}</span>
+
+                                        </span>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% if members_list.has_other_pages %}
+                    <nav aria-label="Page navigation conatiner" style="text-align: center">
+                        <ul class="pagination justify-content-center">
+                            {% if members_list.has_previous %}
+                            <li><a href="?page={{ members_list.previous_page_number }}" class="page-link">&laquo; PREV
+                                </a></li>
+                            {% endif %}
+                            {% if members_list.has_next %}
+                            <li><a href="?page={{ members_list.next_page_number }}" class="page-link"> NEXT &raquo;</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
+
+{% block javascripts %}
+{{ block.super }}
+{% endblock javascripts %}

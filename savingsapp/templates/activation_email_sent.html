@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+<body>
+    {% block content %}
+    {% load crispy_forms_tags %}
+    <section class="page-breadcumb-area bg-with-black">
+        <div class="container text-center">
+            <h2 class="title">Account Sign Up</h2>
+            <ul class="links">
+                <li><a href="#">Home</a></li>
+                <li><a href="javascript:void(0);">Email Confirmation Pending</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="page-contact-area" style="background-color:ivory;">
+        <style type="text/css">
+            .container {
+                font-size: 20px
+            }
+        </style>
+        <div class="container">
+            <h1>Dear <b style="color: darkgreen;">{{member.full_name}} </b>,</h1>
+            <hr />
+            <h3 style="text-align: center;">An email has been sent to <b style="color: darkgreen;">{{member.email}}</b>
+                <br>Please sign into your email address to complete the registration process</h3>
+        </div>
+    </section>
+    {% endblock %}
+</body>

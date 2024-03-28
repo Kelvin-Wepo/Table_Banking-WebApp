@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %} Savings-Home {% endblock title %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock stylesheets %}
+{% block content %}
+    <section class="hero-area">
+        <div class="container-fluid">
+            <p style="text-align: center;"><a href="{% url 'savings-list' %}"  class="btn-sm btn-info">List of Savings</a> Edit Saving
+            <a href="{% url 'make-saving' %}" class="btn-sm btn-info"> Record Savings</a>
+            </p>
+            <h3 style="text-align: center;">Saving Scheme for <b style="color: slateblue;">{{currentCycle}}</b> cycle</h3>
+            <hr />
+            <h5 style="text-align: center;"> Edit Savings Details for <b style="color:red">{{name}}</b></h5>
+            <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+              {% load crispy_forms_tags %}
+                <form method="POST" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                  {{form.name|as_crispy_field}}
+                  {{ form.date|as_crispy_field}}
+                  {{ form.amount|as_crispy_field}}
+                           
+
+                  <button type="submit" class="btn btn-primary" >Update</button>
+                </form>
+
+            </div>
+          </div>
+        </div>
+    </section>
+    {% endblock content %}
+
+    {% block javascripts %}
+        {{ block.super }}
+    {% endblock javascripts %}

@@ -1,0 +1,380 @@
+{% extends "app/base_site.html" %}
+
+{% block title %} Invoice {% endblock title %}
+
+{% load static i18n widget_tweaks %}
+
+{% block javascript %}
+    <script src="{% static 'schools/js/invoices.js' %}"></script>
+{% endblock %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="right_col" role="main">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h3 class="head-title"><i class="fa fa-calculator"></i><small> Manage Invoice</small></h3>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content quick-link">
+                        <span>Quick Link:</span>
+                        <a href="#">Discount</a>
+                        | <a href="#">Fee Type</a>
+                        | <a href="#">Fee Collection</a>
+                        | <a href="#">Manage Invoice</a>
+                        | <a href="#">Due Invoice</a>
+                        | <a href="#">Due Free Email</a>
+                        | <a href="#">Due Free SMS</a>
+                        | <a href="#">Income Head</a>
+                        | <a href="#">Income</a>
+                        | <a href="#">Expenditure Head</a>
+                        | <a href="#">Expenditure</a>
+                    </div>
+                    <div class="x_content">
+                        <div class="" data-example-id="togglable-tabs">
+                            <ul class="nav nav-tabs bordered">
+                                <li role="presentation"><a href="{% url 'invoice_list' %}"><i
+                                        class="fa fa-list-ol"></i> Invoice List</a>
+                                </li>
+                                <li role="presentation" class="active"><a href="{% url 'invoice_create' %}"><i
+                                        class="fa fa-plus-square-o"></i> Create Invoice</a>
+                                </li>
+                            </ul>
+                            <br/>
+                            <div class="tab-pane fade in active" id="tab_single_invoice">
+                                <div class="x_content">
+                                    <form action="{% url 'invoice_create' %}"
+                                          data-students-url="{% url 'ajax_load_students' %}"
+                                          data-fee-amount-url="{% url 'ajax_load_fee_amount' %}"
+                                          id="invoiceForm" class="form-horizontal form-label-left"
+                                          enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                                        {% csrf_token %}
+
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="classroom">Class <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="form-control col-md-7 col-xs-12"
+                                                        name="classroom"
+                                                        id="classroom" required="required">
+                                                    <option value="">--Select--</option>
+                                                    {% for classroom in classrooms %}
+                                                        <option value="{{ classroom.pk }}">{{ classroom.classroom }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="student">Student <span
+                                                    class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="form-control col-md-7 col-xs-12 data_student"
+                                                        name="student" id="student"
+                                                        required="required">
+                                                    <option value="">--Select--</option>
+                                                    
+                                                </select>
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="fee_type">Fee Type <span
+                                                    class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="form-control col-md-7 col-xs-12"
+                                                        name="fee_type" id="fee_type"
+                                                        required="required">
+                                                    <option value="">--Select--</option>
+                                                    {% for feetype in feetypes %}
+                                                        <option value="{{ feetype.pk }}">{{ feetype.fee_title }}</option>
+                                                    {% endfor %}
+
+                                                </select>
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="amount">Fee Amount <span
+                                                    class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input class="form-control col-md-7 col-xs-12"
+                                                       readonly="readonly" name="amount" id="amount"
+                                                       value="{{amounts}}" placeholder="Fee Amount" required="required"
+                                                       type="number" autocomplete="off">
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="month">Month <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input class="form-control col-md-7 col-xs-12" name="month"
+                                                       id="month" value="" placeholder="Month"
+                                                       required="required" type="text" autocomplete="off">
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="is_discount_applicable">Is Applicable Discount? <span
+                                                    class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="form-control col-md-7 col-xs-12"
+                                                        name="is_discount_applicable"
+                                                        id="is_discount_applicable" required="required">
+                                                    <option value="">--Select--</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="paid_status">Paid Status <span class="required">*</span></label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="form-control col-md-7 col-xs-12"
+                                                        name="paid_status" id="paid_status" required="required"
+                                                        onchange="check_paid_status(this.value,'single');">
+                                                    <option value="">--Select--</option>
+                                                    <option value="Paid">Paid</option>
+                                                    <option value="Unpaid">Unpaid</option>
+                                                </select>
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+
+                                        <!-- For cheque Start-->
+                                        <div class="display fn_paid_status" style="">
+                                            <div class="item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                       for="payment_method">Payment Method <span
+                                                        class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <select class="form-control col-md-7 col-xs-12"
+                                                            name="payment_method" id="payment_method"
+                                                            onchange="check_payment_method(this.value, 'single');">
+                                                        <option value="">--Select--</option>
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Cheque">Cheque</option>
+
+
+                                                    </select>
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- For cheque Start-->
+                                        <div class="display fn_cheque" style="">
+
+                                            <div class="item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                       for="bank_name">Bank Name <span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="form-control col-md-7 col-xs-12"
+                                                           name="bank_name" id="bank_name" value=""
+                                                           placeholder="Bank Name" type="text"
+                                                           autocomplete="off">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+                                            <div class="item form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                       for="cheque_number">Cheque Number <span
+                                                        class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="form-control col-md-7 col-xs-12"
+                                                           name="cheque_number" id="cheque_number" value=""
+                                                           placeholder="Cheque Number" type="text"
+                                                           autocomplete="off">
+                                                    <div class="help-block"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- For cheque End-->
+
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                                   for="note">Note</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <textarea class="form-control col-md-7 col-xs-12" name="note"
+                                                                  id="note" placeholder="Note"></textarea>
+                                                <div class="help-block"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-md-offset-3">
+                                                <a href="{% url 'invoice_list' %}"
+                                                   class="btn btn-primary">Cancel</a>
+                                                <button id="send" type="submit" class="btn btn-success">Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <link href="{% static 'vendors/datepicker/datepicker.css' %}" rel="stylesheet">
+        <script src="{% static 'vendors/datepicker/datepicker.js' %}"></script>
+
+        <script type="text/javascript">
+            $('#month').datepicker({format: 'yyyy-mm-dd'});
+
+            $("document").ready(function () {
+                is_edit = false;
+            });
+
+            function check_paid_status(paid_status, type) {
+
+                if (paid_status == "Paid") {
+
+                    $('.fn_paid_status').show();
+                    $('#payment_method').prop('required', true);
+
+                } else if (paid_status == "Unpaid") {
+
+                    $('.fn_cheque').hide();
+                    $('.fn_paid_status').hide();
+                    $('#payment_method').prop('required', false);
+                }
+
+                $("select#payment_method").prop('selectedIndex', 0);
+            }
+
+
+            function check_payment_method(payment_method, type) {
+
+                if (payment_method == "Cheque") {
+
+                    $('.fn_cheque').show();
+                    $('#bank_name').prop('required', true);
+                    $('#cheque_number').prop('required', true);
+
+                } else if (payment_method == "Cash") {
+
+                    $('.fn_cheque').hide();
+                    $('#bank_name').prop('required', false);
+                    $('#cheque_number').prop('required', false);
+                }
+            }
+
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#fee_type").change(function (e) {
+                    e.preventDefault();
+                    var fee_type = $(this).val();
+                    var data = {fee_type};
+                    $.ajax({
+                        type: 'GET',
+                        url: "{% url 'get_fee_amount' %}",
+                        data: data,
+                        success: function (response) {
+                            if (response) {
+                                $('#amount').val(response.fees_info.amount);
+                            }
+                        },
+                        error: function (response) {
+                            console.log(response)
+                        }
+                    })
+                })
+            })
+        </script>
+
+        <!-- datatable with buttons -->
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#datatable-responsive').DataTable({
+                    dom: 'Bfrtip',
+                    iDisplayLength: 15,
+                    buttons: [
+                        'copyHtml5',
+                        'excelHtml5',
+                        'csvHtml5',
+                        'pdfHtml5',
+                        'pageLength'
+                    ],
+                    search: true,
+                    responsive: true
+                });
+            });
+
+            $("#invoiceForm").validate();
+
+            $("#bulk").validate();
+
+            $("#edit").validate();
+
+        </script>
+        <script type="text/javascript">
+
+            $("#classroom").change(function () {
+                var url = $("#InvoiceForm").attr("data-students-url");
+                var classroomId = $(this).val();
+
+                $.ajax({
+                    url: url,
+                    data: {
+                        'classroom': classroomId
+                    },
+                    success: function (data) {
+                        $("#student").html(data);
+                    }
+                });
+            });
+            $("#InvoiceForm").validate();
+        </script>
+
+        <script>
+            $("#feetype").change(function () {
+                var url = $("#invoiceForm").attr("data-fee-amount-url");
+                var feetypeId = $(this).val();
+
+                $.ajax({
+                    url: url,
+                    data: {
+                        'feetype': feetypeId
+                    },
+                    success: function (data) {
+                        $("#amount").html(data);
+                    }
+                });
+            });
+            $("#InvoiceForm").validate();
+        </script>
+
+    </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+    {{ block.super }}
+{% endblock javascripts %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %} Savings-Home {% endblock title %}
+{% load static %}
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+        <div class="hero-slides owl-carousel">
+
+            <!-- Single Hero Slide -->
+
+            <div class="single-hero-slide">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-center">
+                        <div class="col-12 col-md-7">
+                            <div class="hero-slides-content">
+                                <h2 data-animation="fadeInUp" data-delay="100ms">Take a step into the <span>Saving World</span></h2>
+                                <h6 data-animation="fadeInUp" data-delay="400ms">Saving. Loans. Invest</h6>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-5">
+                            <div class="hero-slides-thumb" data-animation="fadeInUp" data-delay="1000ms">
+                                <img class="round-circle" src="{% static 'img/bg-img/pesa.png'%}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Single Hero Slide -->
+            <div class="single-hero-slide">
+                <div class="container h-100">
+                    <div class="row h-100 align-items-center">
+                        <div class="col-12 col-md-7">
+                            <div class="hero-slides-content">
+                                <h2 data-animation="fadeInUp" data-delay="100ms">Save your money now <span>Invest Later</span></h2>
+                                <h6 data-animation="fadeInUp" data-delay="400ms">This is a saving scheme that allows members to save any amount</h6>
+
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-5">
+                            <div class="hero-slides-thumb round-circle" data-animation="fadeInUp" data-delay="1000ms">
+                                <img  src="{% static 'img/bg-img/Money.jpg' %}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+    {{ block.super }}
+{% endblock javascripts %}

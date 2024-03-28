@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %} Savings-Home {% endblock title %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+        <p style="text-align: center;"><a href="{% url 'members-list' %}" class="btn-sm btn-info">Members List</a> <a href="#" class="btn-sm btn-default">Add Member</a></p>
+        <h3 style="text-align: center;">Membership Registration for  <b style="color: slateblue;">{{ current_cycle }}</b> cycle</h3>
+        <hr />
+        <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-4">
+                <h3> Register Member Form</h3>
+                  <form  method="POST" enctype="multipart/form-data" >
+                  {% csrf_token %}
+                  {% load crispy_forms_tags %}
+                    <div class="form-group">
+                      <label for="first_name"><i style="color:red">*</i> First Name:</label>
+                      <input type="text" name="first_name"  class="form-control" id="first_name" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="last_name"><i style="color:red">*</i> Last Name:</label>
+                      <input type="text" name="last_name"  class="form-control" id="last_name" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="email"><i style="color:red">*</i> Email address:</label>
+                      <input type="text" name="email"  class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="telephone"><i style="color:red">*</i> Telephone:</label>
+                      <input type="number" name="telephone"  class="form-control" id="telephone" required>
+                    </div>
+                    <div class="form-group">
+                      {{form.Role|as_crispy_field}}
+                    </div>
+                    
+                    <div class="form-group">
+                      <label for="application_fee"><i style="color:red">*</i> Application Fee:</label>
+                      <input type="number" name="application_fee" class="form-control" id="application_fee" required>
+                    </div>
+                    <div class="form-group">
+                      {{form.is_active|as_crispy_field}}
+                    </div>
+                    <button type="submit" class="btn btn-primary" >Submit</button>
+                  </form>
+
+              </div>
+          
+            <div class="col-lg-7" style='border-left: 3px solid royalblue;'>
+              <h3>List Of Registered Members</h3>
+              <table id="data-table" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                  <tr style="font-weight: bolder;">
+                    <td>Name</td>
+                    <td>Telephone</td>
+                    <td>Action</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for member in all_members %}
+                  <tr>
+                    <td>{{member.last_name}} {{member.first_name}} </td>
+                    <td>{{member.telephone}}</td>
+                    <td>
+                      <div class="mb-4">
+                        <a href="{% url 'view-member' pk=member.id %}" class="btn btn-success btn-sm"><span class="fa fa-eye">
+                            View</span></a>
+                        <a href="{% url 'edit-member' pk=member.id %}" class="btn btn-info btn-sm"><span class="fa fa-edit">
+                            Edit</span></a>
+                        <a href="{% url 'delete-member' pk=member.id %}" class="btn btn-danger btn-sm"><span class="fa fa-trash">
+                            Delete</span></a>
+            
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    {% endblock content %}
+
+    {% block javascripts %}
+        {{ block.super }}
+    {% endblock javascripts %}

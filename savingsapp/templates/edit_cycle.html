@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<p style="text-align: center;"><a href="{% url 'add-cycle' %}" class="btn-sm btn-info btn-sm">Manage Cycles</a> 
+<a href="#" class="btn-sm btn-default btn-sm"> Edit Cycle</a>
+</p>
+<h3 style="text-align: center;">Manage Scheme Cycles </h3>
+<hr />
+        
+        <div class="container">
+          <div class="row">
+             <div class="col-lg-4"></div>
+            <div class="col-lg-4 align-items-center">
+              <h2> Edit Cycle</h2>
+              {% load crispy_forms_tags %}
+                <form method="POST" enctype="multipart/form-data" >
+                  {% csrf_token %}
+                  {{ form.cycle_name|as_crispy_field}}
+                  {{ form.cycle_period_start|as_crispy_field}}
+                  {{ form.cycle_period_end|as_crispy_field}}
+                  {{ form.rate|as_crispy_field}}
+                  <button type="submit" class="btn btn-primary" >Update</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    {% endblock content %}

@@ -1,0 +1,8 @@
+
+        {% autoescape off %}
+                Hi {{ member.full_name }},
+                Thanks for signing up,
+                Please use the following link to confirm that this is your active email address.
+                http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+        
+        {% endautoescape %}

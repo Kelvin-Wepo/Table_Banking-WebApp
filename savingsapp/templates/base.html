@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static  %}
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      {% block head %}
+          {% block meta %}
+              <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+              <link rel="shortcut icon"/>
+              <meta charset="utf-8">
+              <meta charset="ISO-8859-15">
+              <meta http-equiv="X-UA-Compatible" content="IE=edge">
+              <meta name="viewport" content="width=device-width, initial-scale=1">
+          {% endblock meta %}
+          <title>Savings | scheme {% block title %}{% endblock %}</title>
+          {% block stylesheets %}
+              <!-- custom_css -->
+              <!-- added the first dataTables css -->
+              <link href="{% static 'datatables/css/dataTables.bootstrap.min.css' %}" rel="stylesheet">
+              <link href="{% static 'css/animate.css' %}" rel="stylesheet">
+              <link href="{% static 'css/routine.css' %}" rel="stylesheet">
+              <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+              <link href="{% static 'css/classy-nav.min.css' %}" rel="stylesheet">
+              <link href="{% static 'css/custom-icon.css' %}" rel="stylesheet">
+              <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
+              <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+              <link href="{% static 'css/magnific-popups.css' %}" rel="stylesheet">
+              <link href="{% static 'css/owl.carousel.min.css' %}" rel="stylesheet">
+              <link href="{% static 'css/style.css' %}" rel="stylesheet">
+              <!-- bootstrap-date picker -->
+              <link href="{% static 'vendors/datepicker/datepicker.css' %}" rel="stylesheet">
+              <link href="{% static 'vendors/iCheck/skins/flat/green.css' %}" rel="stylesheet">
+              <link href="{% static 'vendors/bootstrap/dist/css/less/dropdowns.less' %}" rel="stylesheet">
+          {% endblock stylesheets %}
+          <link href="/static/build/css/custom.min.css" rel="stylesheet">
+
+      {% endblock head %}
+   </head>
+
+<body class="{% block body_class %}nav-md {% endblock body_class %}" >
+    {% block body %}
+
+      <div class="container-fluid body">
+        <!--menubar--->
+        {% block header %}
+          <header class="header-area">
+             {% include "header.html" %}
+         </header>
+        {% endblock header %}
+
+         <!--Main Content--->
+        {% block content %}
+
+           <h3 style="color: red">
+             {{ message }}
+           </h3>
+        {% endblock content %}
+
+        <!--- Footer-->
+        {% block footer %}
+            <footer>
+                 {% include "footer.html" %}
+            </footer>
+
+        {% endblock footer %}
+      </div>
+
+    {% block javascripts %}
+
+      <!-- jQuery-2.2.4 js -->
+      <script src="{% static 'js/jquery/jquery-2.2.4.min.js' %}"></script>
+      <!-- Popper js -->
+      <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+      <!-- Bootstrap js -->
+      <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+      <!-- All Plugins js -->
+      <script src="{% static 'js/plugins/plugins.js' %}"></script>
+      <!-- Active js -->
+      <script src="{% static 'js/active.js' %}"></script>
+       <!-- jQuery -->
+       <script src="{% static 'vendors/jquery/dist/jquery.min.js' %}"></script>
+       <!-- Bootstrap -->
+       <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+       <script src="{% static 'vendors/bootstrap-progressbar/bootstrap-progressbar.min.js' %}"></script>
+       <!-- iCheck -->
+       <script src="{% static 'vendors/iCheck/icheck.min.js' %}"></script>
+        <!-- bootstrap-date picker -->
+        <script src="{% static 'vendors/datepicker/datepicker.js' %}"></script>
+       <!-- bootstrap-daterangepicker -->
+       <script src="{% static 'vendors/moment/min/moment.min.js' %}"></script>
+       <script src="{% static 'vendors/bootstrap-daterangepicker/daterangepicker.js' %}"></script>
+       <!-- bootstrap-wysiwyg -->
+       <script src="{% static 'vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js' %}"></script>
+       <script src="{% static 'vendors/jquery.hotkeys/jquery.hotkeys.js' %}"></script>
+       <script src="{% static 'vendors/google-code-prettify/src/prettify.js' %}"></script>
+
+   {{ block.super }}
+   <!-- Datatables -->
+   <script src="{% static 'datatables/js/jquery.dataTables.min.js' %}"></script>
+   <script src="{% static 'vendors/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+   <script src="{% static 'vendors/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+   <script src="{% static 'vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js' %}"></script>
+   <!-- added the first dataTables css -->
+   <link href="{% static 'datatables/css/dataTables.bootstrap.min.js' %}" rel="stylesheet">
+   <script src="{% static 'vendors/datatables.net-buttons/js/buttons.flash.min.js' %}"></script>
+   <script src="{% static 'vendors/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+   <script src="{% static 'vendors/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+   <script src="{% static 'vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+   <script src="{% static 'vendors/datatables.net-keytable/js/dataTables.keyTable.min.js' %}"></script>
+   <script src="{% static 'vendors/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+   <script src="{% static 'vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+   <script src="{% static 'vendors/datatables.net-scroller/js/dataTables.scroller.min.js' %}"></script>
+   <script src="{% static 'vendors/jszip/dist/jszip.min.js' %}"></script>
+   <script src="{% static 'vendors/pdfmake/build/pdfmake.min.js' %}"></script>
+   <script src="{% static 'vendors/pdfmake/build/vfs_fonts.js' %}"></script>
+   <!-- DateJS -->
+   <script src="{% static 'vendors/DateJS/build/date.js' %}"></script>
+
+   <!-- also added this build file -->
+    <script src="{% static 'static/build/js/custom.min.js' %}"></script>
+   {% endblock javascripts %}
+
+   <script type="text/javascript">$(document).ready(function ()
+     {
+       $('#data-table').DataTable(
+       {
+         dom: 'Bfrtip',
+         iDisplayLength: 10,
+           buttons: [
+                   'copyHtml5',
+                   'excelHtml5',
+                   'csvHtml5',
+                   'pdfHtml5',
+                   'print',
+                   'pageLength',
+
+                   ],
+         search: true,
+         responsive: true
+         }
+         );
+       }
+       );
+     </script>
+     
+<script type="text/javascript">
+    $('#myTable').DataTable( {
+    responsive: true
+    } );
+</script>
+     <script>
+        $("#success-alert").delay(6000).fadeOut('slow');
+     </script>
+       {% endblock body %}
+       {% block preloader %}
+       {% endblock %}
+
+       {% block extra_script %}
+       {% endblock extra_script %}
+
+       {% block javascript %}
+       {% endblock %}
+
+       {% block extra_js %}
+       {% endblock extra_js %}
+
+       {% block extra_css %}
+       {% endblock extra_css %}
+
+
+       {% block js %}
+       {% endblock js %}
+
+</body>
+
+</html>

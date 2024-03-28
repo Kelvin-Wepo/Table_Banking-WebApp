@@ -1,0 +1,154 @@
+<!-- Top Header Area -->
+
+{% load static %}
+<div class="row">
+<div class="top-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="top-header-content h-100 d-flex align-items-center justify-content-between">
+                    {% if request.get_full_path == "/"  %}
+                        <div class="top-headline">
+                            <p style="font-size:3vw"> Welcome to <span>Save As You Earn</span></p>
+                        </div>
+
+                        {% if user.is_authenticated %}
+                            <div class="login-faq-earn-money">
+                                <p><a href="{% url 'add-cycle' %}">Active Cycle: {{currentCycle}}.</a>
+                                {{request.user.full_name}} <a href="{% url 'logout' %}"> | Logout</a></p>
+                            </div>
+                        {% else %}
+
+                            <div class="login-faq-earn-money">
+                                <p><a href="{% url 'login' %}">Login </a> | <a href="{% url 'MemberAccountRegister' %}"> Register</a></p>
+                            </div>
+                        {% endif %}
+
+                        {% else %}
+                            <div class="top-headline" >
+                                <p style="font-size:18px">Save, Contribute, Get loan and Invest</p>
+                            </div>
+                            {% if request.user.is_authenticated %}
+                                <div class="login-faq-earn-money">
+                                    <p>
+                                        <a href="{% url 'add-cycle' %}">Active Cycle: {{currentCycle}}.</a>
+                                    <i class="fa fa-user"></i> {{request.user.full_name}} <a href="{% url 'logout' %}"> | Logout</a></p>
+                                </div>
+                            {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Navbar Area -->
+<div class="cryptos-main-menu" style=" background-color: #ced4da">
+    <div class="classy-nav-container breakpoint-off">
+        <div class="container-fluid">
+            <!-- Menu -->
+            <nav class="classy-navbar" id="cryptosNav" >
+                <!-- Navbar Toggler -->
+                <div class="classy-navbar-toggler">
+                    <span class="navbarToggler"><span></span><span></span><span></span></span>
+                </div>
+
+                <!-- Menu -->
+                <div class="classy-menu" >
+                    <!-- close btn -->
+                    <div class="classycloseIcon">
+                        <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                    </div>
+
+                    <!-- Nav Start -->
+                    <div class="classynav" >
+                        <ul>
+                            <li><a href="{% url 'index' %}">HOME</a></li>
+                            {% if request.user.is_authenticated %}
+                            <li><a {% if request.get_full_path == '/Add-Member' or request.get_full_path == '/All-Members' %} class="active"{% endif %} href="#">MEMBERS</a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'add-member' %}">Add</a></li>
+                                    <li><a href="{% url 'members-list' %}">View List</a></li>
+                                </ul>
+                            </li>
+                            
+                            <li><a {% if request.get_full_path == '/Record-Attendance' or request.get_full_path == '/Attendance-History' %} class="active"{% endif %} href="#">ATTENDANCE</a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'make-attendence' %}">Record</a></li>
+                                    <li><a href="{% url 'attendence-history' %}">History</a></li>
+                                </ul>
+                            </li>
+                            <li><a {% if request.get_full_path == '/Record-Social-Fund' or request.get_full_path == '/Social-Fund-List' %} class="active"{% endif %} href="#">SOCIAL FUND</a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'record-social-fund' %}">Record</a></li>
+                                    <li><a href="{% url 'social-fund-list' %}">List</a></li>
+                                </ul>
+                            </li>
+
+                             <li><a {% if request.get_full_path == '/Record-Savings' or request.get_full_path == '/All-Savings' %} class="active"{% endif %} href="#">SAVINGS</a>
+                                 <ul class="dropdown">
+                                    <li><a href="{% url 'make-saving' %}">Make Saving</a></li>
+                                    <li><a href="{% url 'savings-list' %}">List Of Savings</a></li>
+                                </ul>
+                            </li>
+                           
+                            <li><a {% if request.get_full_path == '/Loan-Application' or request.get_full_path == '/All-Loans' %} class="active"{% endif %} href="#">LOANS</a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'give-loan' %}">Give Loan</a></li>
+                                    <li><a href="{% url 'loan-list' %}">All Loans</a></li>
+                                </ul>
+                            </li>
+                            <li><a {% if request.get_full_path == '/Manage-Cycles' or request.get_full_path == '/Cycle_List' %} class="active"{% endif %} href="#">CYCLES</a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'add-cycle' %}">Manage Cycles</a></li>
+                                </ul>
+                            </li>
+                            <li><a {% if request.get_full_path == '/Add-Lookup' or request.get_full_path == '/Lookup-Details' %} class="active"{% endif %} href="#">LOOK UPs</a>
+                                <ul class="dropdown">
+                                    <li><a href="{% url 'add-lookup' %}">Look Up</a></li>
+                                    <li><a href="{% url 'add-lookup-details' %}">Look Up Details</a></li>
+                                </ul>
+                            </li>
+                            {% else %}
+                            <li> <a href="{% url 'login' %}" >Please Log in to access more functionalities</a></li>
+                            {% endif %}
+                           <li><a {% if request.get_full_path == '/Sacco-Account'  %} class="active"{% endif %} href="{% url 'sacco-account' %}">SACCO ACCOUNT</a></li>
+                        </ul>
+
+                    </div>
+                    <!-- Nav End -->
+                </div>
+            </nav>
+
+        </div>
+    </div>
+    <!--fade up notification upon successful redirect-->
+    {% if messages %}
+    <div class="col-lg-6" style="float: right">
+        <div class="alert alert-info" id="success-alert">
+            <button type="button" class="close" data-dismiss="alert">x</button>
+            <ul>
+                {% for message in messages %}
+                <h1 style="font-weight: bolder" {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}
+                </h1>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    <style>
+        .active {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            height: auto;
+            background: lawngreen;
+        }
+    
+        .wrapper {
+            max-width: 100% !important;
+            margin: 0px;
+        }
+    </style>
+</div>
+</div>

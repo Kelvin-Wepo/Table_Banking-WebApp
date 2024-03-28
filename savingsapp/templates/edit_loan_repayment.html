@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %} Savings-Home {% endblock title %}
+
+{% block stylesheets %}
+{{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<p style="text-align: center;"><a href="{% url 'loan-list' %}" class="btn-sm btn-info">Loan Details</a>
+    <a href="{% url 'all-loans' %}" class="btn-sm btn-info btn-sm"> All Loans Given</a>
+    Edit Loan Repayment <a href="{% url 'give-loan' %}" class="btn-sm btn-info">Loan Application</a> </p>
+<h3 style="text-align: center;">Loaning Scheme for <b style="color: slateblue;">{{current_cycle}}</b> cycle</h3>
+<hr />
+
+<form action="#" method="POST">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-5">
+            <p>Edit loan repayment of {{name}}</p>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" name="name" value='{{name}}' readonly='True'>
+            </div>
+            {{form.date|as_crispy_field}}
+            {{form.amount|as_crispy_field}}
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </div>
+    </div>
+</form>
+</section>
+{% endblock content %}
+
+{% block javascripts %}
+{{ block.super }}
+{% endblock javascripts %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %} Savings-Home {% endblock title %}
+
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock stylesheets %}
+
+{% block content %}
+
+      <div class="container">
+        <p><a href="{% url 'index'%}">Home</a> / Cycle-List</p>
+        <h3>List of cycles</h3>
+        <table id="data-table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+            <thead>
+              <tr style="font-weight: bolder;">
+                <td>Id</td>
+                <td>Name</td>
+                <td>Period</td>
+                <td>Rate(%)</td>
+                <td>Is Active?</td>
+                <td>Action</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for list in cycle_list %}
+                <tr>
+                  <td>{{list.id}}</td>
+                  <td>{{list.cycle_name}}</td>
+                  <td>{{list.cycle_period}}</td>
+                  <td>{{list.interest_rate}}</td>
+                  <td>{{list.is_active}}</td>
+                  <td> <div class="mb-4">
+                        <a href="#"class="btn btn-info btn-sm"><span class="fa fa-edit"> Edit</span></a>
+                        <a href="#"class="btn btn-danger btn-sm"><span class="fa fa-trash"> Delete</span></a>
+                  </div>
+                 </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+     </div>
+
+        {% endblock content %}
+        {% block javascripts %}
+            {{ block.super }}
+        {% endblock javascripts %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+<body>
+    {% block content %}
+    {% load crispy_forms_tags %}
+    <section class="page-breadcumb-area bg-with-black">
+        <div class="container text-center">
+            <h2 class="title" style="color:green">Sign Up Successful</h2>
+        </div>
+    </section>
+
+    <section class="page-contact-area" style="background-color:ivory;">
+        <style type="text/css">
+            .container {
+                font-size: 20px
+            }
+        </style>
+        <div class="container">
+            <h1>Dear <b style="color: darkgreen;"> {{full_name.full_name}} </b>,</h1>
+            <hr />
+            <h3 style="text-align: center;">Thank you for confirming your email address(<b>{{full_name.email}}</b>), <br> You can now <a 
+                    style="color: darkgreen;" href="{% url 'login' %}">LOGIN</a></h3>
+        </div>
+    </section>
+
+
+    {% endblock %}
+</body>
