@@ -1,0 +1,10 @@
+setup.cfg
+setup.py
+django_humanize/__init__.py
+django_humanize.egg-info/PKG-INFO
+django_humanize.egg-info/SOURCES.txt
+django_humanize.egg-info/dependency_links.txt
+django_humanize.egg-info/requires.txt
+django_humanize.egg-info/top_level.txt
+django_humanize/templatetags/__init__.py
+django_humanize/templatetags/humanizelib.py
