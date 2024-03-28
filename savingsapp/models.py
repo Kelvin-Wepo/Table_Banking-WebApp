@@ -29,7 +29,7 @@ class Member(models.Model):
 	joining_date =models.DateTimeField(auto_now_add=True, blank=True)
 	status = models.CharField(max_length=30,choices=atte,default='Absent', blank=True, null=True)
 	email = models.EmailField(max_length=255, blank=True, null=True)
-	telephone = models.IntegerField(default=0, blank=True, null=True)
+	telephone = models.CharField(max_length=30, null=False)
 	first_name = models.CharField(max_length=30, blank=True, null=True)
 	last_name = models.CharField(max_length=255, blank=True, null=True)
 	username = models.CharField(max_length=30, unique=True, blank=True, null=True)
