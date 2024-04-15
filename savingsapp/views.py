@@ -38,7 +38,7 @@ def MemberAccountRegister(request):
             member.is_active = True  # Activate the user without email verification
             member.save()
             login(request, member)  # Log the user in after registration
-            return redirect('home')  # Redirect to the home page
+            return redirect('index')  # Redirect to the home page
     else:
         form = MembershipAccountForm()
     return render(request, 'membershipaccount.html', {'form': form})
