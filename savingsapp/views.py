@@ -1,5 +1,6 @@
 from django.contrib.auth import login
 from django.shortcuts import render,redirect,get_object_or_404
+import requests
 from .forms import *
 from django.http import HttpResponse
 from django.contrib import messages
@@ -22,6 +23,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode 
 from django.utils.encoding import force_bytes
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+import africastalking
 
 
 class StockList(APIView):
@@ -62,25 +66,93 @@ def index(request):
     return render(request,'index.html')
 
 #record member
-@login_required
+# @login_required
+# def add_member(request):
+#     try:
+#         current_cycle = Cycle.objects.get(is_active=True)
+#     except ObjectDoesNotExist:
+#         current_cycle = None  # Handle the case when no active cycle exists
+
+#     all_members = Member.objects.filter(is_active=True)
+    
+#     if request.method == "POST":
+#         fname = request.POST.get('first_name')
+#         lname = request.POST.get('last_name')
+#         form = MemberForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             for i in all_members:
+#                 if i.first_name == fname and i.last_name == lname:
+#                     return HttpResponse('Member With those Names Already Exists')
+#             form.save()
+#             messages.success(request, f'Member has been successfully added to the system')
+#             return redirect('add-member')
+#     else:
+#         form = MemberForm()
+    
+#     context = {'form': form, 'all_members': all_members, 'current_cycle': current_cycle}
+#     return render(request, 'add_member.html', context)
+africastalking.initialize(settings.AFRICASTALKING_USERNAME, settings.AFRICASTALKING_API_KEY)
+sms = africastalking.SMS
+
+
+
+# Utility function to format phone number
+def format_phone_number(phone_number):
+    # Convert phone number to string if it's not already
+    phone_number = str(phone_number)
+    
+    if not phone_number.startswith("+"):
+        return "+254" + phone_number[-9:]  # Assuming all numbers are Kenyan
+    return phone_number
+
+
 def add_member(request):
     try:
         current_cycle = Cycle.objects.get(is_active=True)
     except ObjectDoesNotExist:
         current_cycle = None  # Handle the case when no active cycle exists
-
+    
     all_members = Member.objects.filter(is_active=True)
     
     if request.method == "POST":
-        fname = request.POST.get('first_name')
-        lname = request.POST.get('last_name')
         form = MemberForm(request.POST, request.FILES)
         if form.is_valid():
-            for i in all_members:
-                if i.first_name == fname and i.last_name == lname:
-                    return HttpResponse('Member With those Names Already Exists')
-            form.save()
-            messages.success(request, f'Member has been successfully added to the system')
+            fname = form.cleaned_data['first_name']
+            lname = form.cleaned_data['last_name']
+            telephone = form.cleaned_data['telephone']
+            
+            # Check if member already exists
+            if Member.objects.filter(first_name=fname, last_name=lname).exists():
+                messages.error(request, 'Member with those names already exists')
+                return redirect('add-member')
+            
+            new_member = form.save()
+            
+            # Send SMS using Africa's Talking API
+            message = "Dear member, you have been successfully added to our system. Thank you for choosing to save with us."
+            
+            # Africa's Talking API credentials from settings
+            username = "Kwepo"  # Replace with your Africa's Talking username
+            api_key = settings.AFRICASTALKING_API_KEY  # Store your Africa's Talking API key in settings.py
+            
+            try:
+                # Initialize SDK
+                africastalking.initialize(username, api_key)
+                
+                # Get the SMS service
+                sms = africastalking.SMS
+                
+                # Format the phone number
+                formatted_phone = format_phone_number(telephone)
+                
+                # Send the message
+                response = sms.send(message, [formatted_phone], sender_id="20880")
+                print(response)
+                
+                messages.success(request, 'Member has been successfully added to the system and a confirmation message has been sent to their phone.')
+            except Exception as e:
+                messages.warning(request, f'Member added, but there was an error sending the confirmation message: {str(e)}')
+            
             return redirect('add-member')
     else:
         form = MemberForm()
@@ -268,16 +340,33 @@ def attendence_history(request):
     context = {'years': years, 'month': month, 'a_month': a_month, 'current_cycle': current_cycle}
     return render(request, "view_attendance.html", context)
 
+
+
+
 #record member savings
 @login_required
 def make_saving(request):
     if request.method == 'POST':
         form = SavingsForm(request.POST or None, request.FILES or None)
         if form.is_valid():
-            form.save()
-            messages.success(request, f'Savings of the member has been Recorded')
-            return redirect('make-saving')
-
+            saving = form.save(commit=False)
+            
+            # Check for SIM swap before processing the saving
+            member = saving.name
+            sim_check_result = check_sim_swap(member.phone_number)
+            
+            if sim_check_result.get('status') == 'Success':
+                saving.save()
+                messages.success(request, f'Savings of the member has been Recorded')
+                
+                # Send transaction notification
+                message = f"Transaction alert: Saving of ${saving.amount} recorded on {saving.date}"
+                send_sms(member.phone_number, message)
+                
+                return redirect('make-saving')
+            else:
+                messages.error(request, f'Unable to process saving due to SIM check failure')
+    
     current_cycle = Cycle.objects.filter(is_active=True)
     if current_cycle.exists():  # Check if current_cycle is not empty
         current_cycle = current_cycle.first()  # Assuming there's only one active cycle

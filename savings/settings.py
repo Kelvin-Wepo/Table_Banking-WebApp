@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'bootstrap_datepicker_plus',
     'psycopg2',
+    'africastalking',
 ]
 AUTH_USER_MODEL = "savingsapp.CustomUser"
 MIDDLEWARE = [
@@ -183,7 +184,8 @@ LOGOUT_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
 
 AFRICASTALKING_USERNAME ='Kwepo'
-AFRICASTALKING_API_KEY ='d683ad9ba31cb9035b545f4383d0f033398eb314229b36feb05c4d4d860bc511'
+AFRICASTALKING_API_KEY ='atsk_c437ab7ca1251be1238bfc411083d5cffe4921c058ddfb246d41df1cfac8c533684a0ec5'
+# AFRICASTALKING_ENVIRONMENT='Sandbox'
 
 
 
